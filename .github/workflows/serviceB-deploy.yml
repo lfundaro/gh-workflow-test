@@ -1,4 +1,4 @@
-name: Deploy
+name: ServiceB Deploy
 
 on:
   workflow_run:

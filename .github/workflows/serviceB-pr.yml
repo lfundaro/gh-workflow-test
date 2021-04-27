@@ -1,4 +1,4 @@
-name: PR checkers A
+name: PR checkers B
 on:
   pull_request:
     paths:

@@ -34,10 +34,4 @@ jobs:
     needs: unit-tests
     steps:
       - run: echo "A job that triggers after a dependency is satisfied"
-  deploy-staging:
-    runs-on: ubuntu-latest
-    needs: [integration-test1,integration-test2,integration-test3]
-    environment: staging
-    steps:
-      - run: echo "I'm deployed"
 

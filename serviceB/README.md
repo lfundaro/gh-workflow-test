@@ -1,1 +1,3 @@
 ServiceB
+
+should trigger B

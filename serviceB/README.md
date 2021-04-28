@@ -6,3 +6,6 @@ foo
 bar
 
 
+
+
+d

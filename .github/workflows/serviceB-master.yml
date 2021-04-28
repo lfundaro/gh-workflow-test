@@ -9,31 +9,50 @@ on:
 jobs:
   unit-tests:
     runs-on: ubuntu-latest
+    container:
+      image: alpine
+      volumes:
+       - /var/run/docker.sock:/var/run/docker.sock
     steps:
-      - run: echo "🎉 The job was automatically triggered by a ${{ github.event_name }} event."
-      - run: echo "🐧 This job is now running on a ${{ runner.os }} server hosted by GitHub!"
-      - run: echo "🔎 The name of your branch is ${{ github.ref }} and your repository is ${{ github.repository }}."
+      - run: docker ps -a
       - name: Check out repository code
         uses: actions/checkout@v2
-      - run: echo "💡 The ${{ github.repository }} repository has been cloned to the runner."
-      - run: echo "🖥️ The workflow is now ready to test your code on the runner."
       - name: List files in the repository
         run: |
-          ls ${{ github.workspace }}
+          ls -la
       - run: echo "🍏 This job's status is ${{ job.status }}."
   integration-test1:
     runs-on: ubuntu-latest
     needs: unit-tests
     steps:
-      - run: echo "A job that triggers after a dependency is satisfied"
+      - name: cache out directory
+        uses: actions/cache@v2
+        env:
+          cache-name: integration-test1
+        with:
+          path: out/
+          key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ github.ref }}
   integration-test2:
     runs-on: ubuntu-latest
     needs: unit-tests
     steps:
-      - run: echo "A job that triggers after a dependency is satisfied"
+      - name: cache out directory
+        uses: actions/cache@v2
+        env:
+          cache-name: integration-test2
+        with:
+          path: out/
+          key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ github.ref }}
+      - run: make integration-test2
   integration-test3:
     runs-on: ubuntu-latest
     needs: unit-tests
     steps:
-      - run: echo "A job that triggers after a dependency is satisfied"
+      - run: false
+  deploy-staging:
+    runs-on: ubuntu-latest
+    environment:
+      name: production
+    steps:
+      - run: echo "I'm deployed"
 

@@ -6,6 +6,15 @@ on:
       - .github/workflows/serviceB-pr.yml
 
 jobs:
+  docker-registry-test:
+    runs-on: ubuntu-latest
+    container:
+      image: lfundaro/my-app-image
+      credentials:
+        username: lfundaro
+        password: ${{ secrets.DOCKER_HUB_TOKEN }}
+    steps:
+      - run: echo "hello world"
   unit-tests:
     runs-on: ubuntu-latest
     container:

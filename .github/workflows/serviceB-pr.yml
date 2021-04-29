@@ -3,6 +3,7 @@ on:
   pull_request:
     paths:
       - 'serviceB/**'
+      - .github/workflows/serviceB-pr.yml
 
 jobs:
   unit-tests:
@@ -15,8 +16,6 @@ jobs:
       - run: docker ps -a
       - name: Check out repository code
         uses: actions/checkout@v2
-      - run: echo "💡 The ${{ github.repository }} repository has been cloned to the runner."
-      - run: echo "🖥️ The workflow is now ready to test your code on the runner."
       - name: List files in the repository
         run: |
           ls -la
@@ -25,15 +24,33 @@ jobs:
     runs-on: ubuntu-latest
     needs: unit-tests
     steps:
-      - run: echo "A job that triggers after a dependency is satisfied"
+      - name: Check out repository code
+        uses: actions/checkout@v2
+      - name: cache out directory
+        uses: actions/cache@v2
+        env:
+          cache-name: integration-test1
+        with:
+          path: out/
+          key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ github.sha }}
+      - run: make integration-test1
   integration-test2:
     runs-on: ubuntu-latest
     needs: unit-tests
     steps:
-      - run: echo "A job that triggers after a dependency is satisfied"
+      - name: Check out repository code
+        uses: actions/checkout@v2
+      - name: cache out directory
+        uses: actions/cache@v2
+        env:
+          cache-name: integration-test2
+        with:
+          path: out/
+          key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ github.sha }}
+      - run: make integration-test2
   integration-test3:
     runs-on: ubuntu-latest
     needs: unit-tests
     steps:
-      - run: echo "A job that triggers after a dependency is satisfied"
+      - run: /bin/false
 

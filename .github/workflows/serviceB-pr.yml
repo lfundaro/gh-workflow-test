@@ -9,7 +9,7 @@ jobs:
   docker-registry-test:
     runs-on: ubuntu-latest
     container:
-      image: lfundaro/my-app-image
+      image: lfundaro/my-app-image:v1.0.1
       credentials:
         username: lfundaro
         password: ${{ secrets.DOCKER_HUB_TOKEN }}

@@ -13,44 +13,16 @@ jobs:
       volumes:
        - /var/run/docker.sock:/var/run/docker.sock
     steps:
-      - run: docker ps -a
-      - name: Check out repository code
-        uses: actions/checkout@v2
-      - name: List files in the repository
-        run: |
-          ls -la
-      - run: echo "🍏 This job's status is ${{ job.status }}."
-  integration-test1:
-    runs-on: ubuntu-latest
-    needs: unit-tests
-    steps:
-      - name: Check out repository code
-        uses: actions/checkout@v2
-      - name: cache out directory
+      - name: load/create cache for make tasks
         uses: actions/cache@v2
-        env:
-          cache-name: integration-test1
         with:
-          path: out/
-          key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ github.sha }}
+          path: out/**
+          key: ${{ runner.os }}-build-${{ github.sha }}
+      - name: Check out repository code
+        uses: actions/checkout@v2
+      - run: make check_files_on_out
       - run: make integration-test1
-  integration-test2:
-    runs-on: ubuntu-latest
-    needs: unit-tests
-    steps:
-      - name: Check out repository code
-        uses: actions/checkout@v2
-      - name: cache out directory
-        uses: actions/cache@v2
-        env:
-          cache-name: integration-test2
-        with:
-          path: out/
-          key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ github.sha }}
+      - run: make write_on_out
       - run: make integration-test2
-  integration-test3:
-    runs-on: ubuntu-latest
-    needs: unit-tests
-    steps:
-      - run: /bin/false
+      - run: make check_files_on_out
 

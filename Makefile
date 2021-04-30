@@ -10,7 +10,7 @@ out/integration-test1:
 	touch $@
 
 write_on_out:
-	touch out/$${RANDOM}
+	touch out/hello
 .PHONY: write_on_out
 
 check_files_on_out:

@@ -9,7 +9,7 @@ jobs:
   unit-tests:
     runs-on: ubuntu-latest
     container:
-      image: docker
+      image: ubuntu
       volumes:
        - /var/run/docker.sock:/var/run/docker.sock
     steps:
@@ -20,7 +20,7 @@ jobs:
           key: ${{ runner.os }}-build-${{ github.sha }}
       - name: Check out repository code
         uses: actions/checkout@v2
-      - run: apk add make tar
+      - run: apt-get update; apt-get install make
       - run: make check_files_on_out || true
       - run: make integration-test1
       - run: make write_on_out

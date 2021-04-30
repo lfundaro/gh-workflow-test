@@ -20,7 +20,7 @@ jobs:
           key: ${{ runner.os }}-build-${{ github.sha }}
       - name: Check out repository code
         uses: actions/checkout@v2
-      - run: apk add make
+      - run: apk add make tar
       - run: make check_files_on_out || true
       - run: make integration-test1
       - run: make write_on_out

@@ -21,7 +21,7 @@ jobs:
           path: out/**
           key: ${{ runner.os }}-build-${{ github.sha }}
       - shell: bash
-        run: touch out/${RANDOM}
+        run: touch out/${RANDOM} || true
       - run: apt-get update; apt-get install make
       - run: make check_files_on_out || true
       - run: make integration-test1

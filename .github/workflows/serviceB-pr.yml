@@ -13,13 +13,13 @@ jobs:
       volumes:
        - /var/run/docker.sock:/var/run/docker.sock
     steps:
+      - name: Check out repository code
+        uses: actions/checkout@v2
       - name: load/create cache for make tasks
         uses: actions/cache@v2
         with:
           path: out/**
           key: ${{ runner.os }}-build-${{ github.sha }}
-      - name: Check out repository code
-        uses: actions/checkout@v2
       - run: apt-get update; apt-get install make
       - run: make check_files_on_out || true
       - run: make integration-test1

@@ -9,10 +9,6 @@ out/integration-test1:
 	/bin/sleep 10
 	touch $@
 
-write_on_out:
-	touch out/hello
-.PHONY: write_on_out
-
 check_files_on_out:
 	ls -lRa out
 .PHONY: check_files_on_out
